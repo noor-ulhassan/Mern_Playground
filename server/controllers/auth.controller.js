@@ -22,14 +22,21 @@ export const registeruser = async (req, res) => {
       });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({
+    const newUser = await User.create({
       username,
       email,
       password: hashedPassword,
     });
+
+    generateWebToken(res, newUser._id);
     return res.status(201).json({
       success: true,
       message: "User Created Successfully",
+      user: {
+        _id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -67,11 +74,15 @@ export const login = async (req, res) => {
       });
     }
 
-    generateWebToken(user, res);
+    generateWebToken(res, user._id);
     return res.status(200).json({
       success: true,
       message: "Login Successfull",
-      user,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      },
     });
   } catch (error) {
     console.log(error);
