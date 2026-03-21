@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 //register user
 
-export const registeruser = async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
@@ -89,6 +89,23 @@ export const login = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to Login",
+    });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("jwt", cookieOptions);
+
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to logout",
     });
   }
 };
