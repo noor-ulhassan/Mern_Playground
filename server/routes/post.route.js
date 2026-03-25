@@ -8,7 +8,7 @@ import {
   deletePost,
 } from "../controllers/post.controller.js";
 
-const router = express.Router();
+const postRouter = express.Router();
 
 router.post("/create", isAuthenticated, createPost);
 router.get("/all", getAllPost);
@@ -16,4 +16,4 @@ router.get("/:id", singlePost);
 router.put("/:id", isAuthenticated, updatePost);
 router.delete("/:id", isAuthenticated, deletePost);
 
-export default router;
+export default postRouter;
