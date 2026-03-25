@@ -62,7 +62,32 @@ export const getPostComments = async (req, res) => {
 
 // DELETE COMMENT
 
-const deleteComment = async (req, res) => {
+export const deleteComment = async (req, res) => {
   try {
-  } catch (error) {}
+    const { id } = req.params;
+    const comment = await Comment.findById(id);
+    if (!comment) {
+      return res.status(404).json({
+        success: false,
+        message: "Comment not found",
+      });
+    }
+    if (comment.author.toString() !== req.user._id.toString()) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+    await Comment.findByIdAndDelete(id);
+    return res.status(200).json({
+      success: true,
+      message: "Comment deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete comment",
+    });
+  }
 };
