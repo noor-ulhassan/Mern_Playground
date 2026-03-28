@@ -2,3 +2,5 @@ node_modules
 .env
 implementation_plan.md.resolved
 .gitignore
+
+auth_architecture.md
